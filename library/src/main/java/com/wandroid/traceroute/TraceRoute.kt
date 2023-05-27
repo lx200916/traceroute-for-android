@@ -1,5 +1,6 @@
 package com.wandroid.traceroute
 
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 
@@ -80,7 +81,8 @@ object TraceRoute {
      */
     @Synchronized
     fun traceRoute(hostname: String, async: Boolean = false): TraceRouteResult? {
-        val args = arrayOf("traceroute", hostname)
+        val isIpv6 = hostname.contains(":") || Build.VERSION.SDK_INT<28
+        val args = if (isIpv6) arrayOf("traceroute", hostname) else arrayOf("traceroute","-l", hostname)
         if (async) {
             Thread({
                 traceRoute(args)
@@ -105,7 +107,7 @@ object TraceRoute {
             traceRouteResult.message = result.toString()
             handler.post { callback?.onSuccess(traceRouteResult) }
         } else {
-            traceRouteResult.message = "execute traceroute failed."
+            traceRouteResult.message = result.toString()
             handler.post {
                 callback?.onFailed(traceRouteResult.code, traceRouteResult.message)
             }

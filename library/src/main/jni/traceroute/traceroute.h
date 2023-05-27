@@ -8,7 +8,7 @@
 
 #include <netinet/in.h>
 
-#include "libsupp/clif.h"
+#include <libsupp/clif.h>
 
 
 union common_sockaddr {
@@ -94,6 +94,7 @@ int raw_can_connect (void);
 unsigned int random_seq (void);
 uint16_t in_csum (const void *ptr, size_t len);
 
+int exec(int argc, char *argv[]);
 
 void tr_register_module (tr_module *module);
 const tr_module *tr_get_module (const char *name);
@@ -104,6 +105,4 @@ static void __init_ ## MOD (void) {	\
 				\
 	tr_register_module (&MOD);	\
 }
-
-int exec (int argc, char *argv[]);
 

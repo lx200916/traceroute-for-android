@@ -97,6 +97,7 @@ int fprintf(FILE *fp, const char *fmt, ...) {
     cnt = vsnprintf(buffer, OUTPUT_LENGTH, fmt, argptr);
     buffer[cnt] = '\0';
     LOGE("traceroute error message(fprintf): %s", buffer);
+
     free(buffer);
     va_end(argptr);
     return 1;
@@ -109,6 +110,7 @@ int vfprintf(FILE *fp, const char *fmt, va_list args) {
     cnt = vsnprintf(buffer, OUTPUT_LENGTH, fmt, args);
     buffer[cnt] = '\0';
     LOGE("traceroute error message(vfprintf): %s", buffer);
+    call_java_append_result(buffer);
     free(buffer);
     return 1;
 }
